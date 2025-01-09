@@ -78,6 +78,7 @@
       progressText.textContent = `Loading... ${progress}%`;
       if (loadedImages === total) {
         setTimeout(() => {
+          console.log("Images Uploaded");
           window.location.href = 'main.html'; // Redirect to actual website
         }, 500); // Short delay for smooth transition
       }
