@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loading Page</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #222;
+      color: #fff;
+    }
+
+    .loader-container {
+      text-align: center;
+    }
+
+    .progress-bar {
+      width: 80%;
+      height: 20px;
+      background: #444;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: #76c7c0;
+      transition: width 0.2s;
+    }
+
+    #progress-text {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="loader-container">
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+    <p id="progress-text">Loading... 0%</p>
+  </div>
+
+  <script>
+    const imagePaths = []; // Array to store image URLs
+    for (let i = 1; i <= 200; i++) {
+      imagePaths.push(`./Quest/${i}.png`); // Adjust path as needed
+    }
+
+    const progressBar = document.querySelector('.progress-fill');
+    const progressText = document.getElementById('progress-text');
+    let loadedImages = 0;
+
+    function preloadImages(paths) {
+      return new Promise((resolve) => {
+        paths.forEach((path) => {
+          const img = new Image();
+          img.src = path;
+          img.onload = () => updateProgress(paths.length, resolve);
+          img.onerror = () => updateProgress(paths.length, resolve); // Handle loading errors
+        });
+      });
+    }
+
+    function updateProgress(total, resolve) {
+      loadedImages++;
+      const progress = Math.round((loadedImages / total) * 100);
+      progressBar.style.width = `${progress}%`;
+      progressText.textContent = `Loading... ${progress}%`;
+      if (loadedImages === total) {
+        setTimeout(() => {
+          window.location.href = 'main.html'; // Redirect to actual website
+        }, 500); // Short delay for smooth transition
+      }
+    }
+
+    preloadImages(imagePaths);
+  </script>
+</body>
+</html>
